@@ -313,10 +313,10 @@ class UserService(Service):
             )
         return user
 
-<<<<<<< HEAD
-=======
-    def save_login_token(self, db: Session, user: User, token: str, expiration: datetime):
-        '''Save the token and expiration in the user's record'''
+    def save_login_token(
+        self, db: Session, user: User, token: str, expiration: datetime
+    ):
+        """Save the token and expiration in the user's record"""
         db.query(TokenLogin).filter(TokenLogin.user_id == user.id).delete()
 
         token = TokenLogin(user_id=user.id, token=token, expiry_time=expiration)
@@ -324,25 +324,25 @@ class UserService(Service):
         db.commit()
         db.refresh(token)
 
-    def verify_login_token(self, db: Session, schema:token.TokenRequest):
-        '''Verify the token and email combination'''
+    def verify_login_token(self, db: Session, schema: token.TokenRequest):
+        """Verify the token and email combination"""
         user = db.query(User).filter(User.email == schema.email).first()
-        
+
         if not user:
             raise HTTPException(status_code=401, detail="Invalid email or token")
-        
+
         token = db.query(TokenLogin).filter(TokenLogin.user_id == user.id).first()
 
         if token.token != schema.token or token.expiry_time < datetime.utcnow():
             raise HTTPException(status_code=401, detail="Invalid email or token")
 
         return user
-    
+
     def generate_token(self):
-        '''Generate a 6-digit token'''
-        return ''.join(random.choices(string.digits, k=6)), datetime.utcnow() + timedelta(minutes=10)
+        """Generate a 6-digit token"""
+        return "".join(
+            random.choices(string.digits, k=6)
+        ), datetime.utcnow() + timedelta(minutes=10)
 
-
->>>>>>> dev
 
 user_service = UserService()
