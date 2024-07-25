@@ -174,4 +174,4 @@ def test_user_inactive(mock_user_service, mock_db_session):
     )
 
     assert user_already_deactivated.status_code == 403
-    assert user_already_deactivated.json().get("message") == "User is not active"
+    assert user_already_deactivated.json().get('message') == 'User is not active'
